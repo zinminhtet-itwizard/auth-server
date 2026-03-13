@@ -82,6 +82,16 @@ src/
 # Production keys should be managed externally (vault, env vars, mounted secrets)
 ```
 
+## Commit Conventions
+Follow [Conventional Commits](https://www.conventionalcommits.org/):
+```
+<type>: <short summary (under 72 chars)>
+
+- detail 1 (optional body)
+- detail 2
+```
+Types: `feat`, `fix`, `chore`, `refactor`, `test`, `docs`, `style`, `ci`
+
 ## Code Conventions
 - Follow standard Java naming conventions (camelCase methods/fields, PascalCase classes)
 - Use constructor injection (no field injection with `@Autowired`)
