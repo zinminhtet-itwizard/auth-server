@@ -1,6 +1,9 @@
 spring:
   application:
     name: auth-server
+  jpa:
+    hibernate:
+      ddl-auto: validate
 
 server:
   port: 9000
