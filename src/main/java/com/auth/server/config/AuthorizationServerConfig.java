@@ -42,7 +42,10 @@ public class AuthorizationServerConfig {
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
         http
             .oauth2AuthorizationServer(authorizationServer ->
-                authorizationServer.oidc(Customizer.withDefaults()))
+                authorizationServer
+                    .authorizationEndpoint(endpoint ->
+                        endpoint.consentPage("/oauth2/consent"))
+                    .oidc(Customizer.withDefaults()))
             .authorizeHttpRequests(authorize ->
                 authorize.anyRequest().authenticated())
             .exceptionHandling(exceptions ->

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consent - Auth Server</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .consent-card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 2rem;
+            width: 100%;
+            max-width: 450px;
+        }
+        .consent-card h1 {
+            text-align: center;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-size: 1.5rem;
+        }
+        .consent-card p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+        .client-name {
+            font-weight: 600;
+            color: #333;
+        }
+        .scopes-list {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+        .scopes-list li {
+            padding: 0.75rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .scopes-list input[type="checkbox"] {
+            width: 1.1rem;
+            height: 1.1rem;
+        }
+        .scopes-list label {
+            color: #333;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+        .btn-group {
+            display: flex;
+            gap: 0.75rem;
+        }
+        .btn {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .btn-approve {
+            background: #4a90d9;
+            color: #fff;
+        }
+        .btn-approve:hover { background: #3a7bc8; }
+        .btn-deny {
+            background: #e5e7eb;
+            color: #333;
+        }
+        .btn-deny:hover { background: #d1d5db; }
+    </style>
+</head>
+<body>
+    <div class="consent-card">
+        <h1>Authorization Request</h1>
+        <p>
+            <span class="client-name" th:text="${clientName}">App</span>
+            is requesting access to your account
+            <strong th:text="${principalName}">user</strong>
+        </p>
+
+        <form th:action="@{/oauth2/authorize}" method="post">
+            <input type="hidden" name="client_id" th:value="${clientId}">
+            <input type="hidden" name="state" th:value="${state}">
+
+            <ul class="scopes-list">
+                <li th:each="scope : ${requestedScopes}">
+                    <input type="checkbox" name="scope" th:value="${scope}" th:id="${scope}" checked>
+                    <label th:for="${scope}" th:text="${scope}">scope</label>
+                </li>
+            </ul>
+
+            <div class="btn-group">
+                <button type="submit" class="btn btn-approve">Approve</button>
+                <a th:href="@{/oauth2/authorize(client_id=${clientId},state=${state})}"
+                   class="btn btn-deny" style="text-align: center; text-decoration: none;">Deny</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
