@@ -59,7 +59,8 @@ public class AuthorizationServerConfig {
         http
             .authorizeHttpRequests(authorize ->
                 authorize.anyRequest().authenticated())
-            .formLogin(Customizer.withDefaults());
+            .formLogin(form ->
+                form.loginPage("/login").permitAll());
 
         return http.build();
     }
