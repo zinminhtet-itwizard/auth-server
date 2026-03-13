@@ -15,8 +15,10 @@ import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
+import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
 import java.util.Set;
 import java.util.UUID;
 
@@ -46,6 +48,10 @@ public class DevDataInitializer implements ApplicationRunner {
                     .scope(OidcScopes.EMAIL)
                     .clientSettings(ClientSettings.builder()
                             .requireAuthorizationConsent(true)
+                            .build())
+                    .tokenSettings(TokenSettings.builder()
+                            .accessTokenTimeToLive(Duration.ofMinutes(15))
+                            .refreshTokenTimeToLive(Duration.ofDays(7))
                             .build())
                     .build();
 
