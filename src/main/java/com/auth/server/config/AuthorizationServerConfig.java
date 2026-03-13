@@ -41,11 +41,13 @@ public class AuthorizationServerConfig {
     @Order(1)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-            .oauth2AuthorizationServer(authorizationServer ->
+            .oauth2AuthorizationServer(authorizationServer -> {
+                http.securityMatcher(authorizationServer.getEndpointsMatcher());
                 authorizationServer
                     .authorizationEndpoint(endpoint ->
                         endpoint.consentPage("/oauth2/consent"))
-                    .oidc(Customizer.withDefaults()))
+                    .oidc(Customizer.withDefaults());
+            })
             .authorizeHttpRequests(authorize ->
                 authorize.anyRequest().authenticated())
             .exceptionHandling(exceptions ->
